@@ -1,10 +1,16 @@
 
-$diceItemSize: 2.25rem;
+$diceItemSize: 2rem;
 
-$boardItemSize: 3rem;
-$boardItemRadius: 0.75rem;
+:root {
+  --windows-width: 430px;
+  --windows-height: 430px;
+  --boardItemSize: 3rem;
+}
+
+$boardItemSize: 2.25rem;
+$boardItemRadius: 0.5rem;
 
 $playerOne: #00BBF9;
-$playerTwo: #FEE440;
+$playerTwo: #FFB703;
 $playerThree: #66A182;
 $playerFour: #BF9ACA;

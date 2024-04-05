@@ -76,6 +76,8 @@ const Board = ({ size, currentPlayer, setCurrentPlayer, maxPlayers, setIsFinishe
     }, [cells]);
 
     useEffect(() => {
+        checkPlayerOut();
+
         if (players.length == maxPlayers && players.filter(x => !x.isOut).length == 1) {
             setIsFinished(true);
         }
@@ -86,10 +88,15 @@ const Board = ({ size, currentPlayer, setCurrentPlayer, maxPlayers, setIsFinishe
             return alert('something happen');
         }
 
+        let isFirst = false;
+
         if (state.player == null || state.player == currentPlayer) {
             if (state.player == null && players.find(x => x.playerNumber == currentPlayer)) {
                 return;
             }
+
+            const audio = new Audio('/src/assets/sounds/click.mp3');
+            audio.play().then(() => {});
 
             if (state.player == null && !players.find(x => x.playerNumber == currentPlayer)) {
                 setPlayers(prev => ([...prev, {
@@ -98,13 +105,14 @@ const Board = ({ size, currentPlayer, setCurrentPlayer, maxPlayers, setIsFinishe
                     initialCellIndex: state.cellIndex,
                     isOut: false
                 }]))
+                isFirst = true;
             }
 
             const newCells = [...cells];
             const newCellValue: CellState = {
                 ...state,
                 player: currentPlayer,
-                state: state.state+1
+                state: isFirst ? 3 : state.state+1
             }
 
             newCells[state.rowIndex][state.cellIndex] = newCellValue
@@ -119,12 +127,13 @@ const Board = ({ size, currentPlayer, setCurrentPlayer, maxPlayers, setIsFinishe
                 setWaiting(false);
             }
 
-
             prepareNextPlayer();
         }
     }
 
     const prepareNextPlayer = () => {
+        checkPlayerOut();
+
         let nextPlayer = currentPlayer+1 > maxPlayers ? 1 : currentPlayer+1;
 
         for (let i = 0; i < Infinity; i++) {

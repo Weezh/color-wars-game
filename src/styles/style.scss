@@ -4,24 +4,63 @@
 
 @import "variables";
 
+body {
+  min-height: 100vh;
+  /* mobile viewport bug fix */
+  min-height: -webkit-fill-available;
+}
+
+.game-page {
+  height: var(--windows-height);
+  width: var(--windows-width);
+  //overflow: hidden;
+}
+
+html {
+  height: -webkit-fill-available;
+}
+
+.btn-close svg {
+  stroke: white;
+}
+
 .bg-player1 {
   background: $playerOne;
+  transition: background-color 100ms linear;
 }
 
 .bg-player2 {
   background: $playerTwo;
+  transition: background-color 100ms linear;
 }
 
 .bg-player3 {
   background: $playerThree;
+  transition: background-color 100ms linear;
 }
 
 .bg-player4 {
   background: $playerFour;
+  transition: background-color 100ms linear;
 }
+
+@media screen and (orientation: landscape) {
+  #rotated-device {
+    display: flex;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  #rotated-device {
+    display: none;
+  }
+}
+
 
 .board {
   display: grid;
+  padding: 8px;
+  margin: 20px;
 
   .row {
     display: flex;
@@ -31,28 +70,34 @@
     padding: 0;
     border: 0 !important;
     background: #eee;
-    width: $boardItemSize;
-    height: $boardItemSize;
+    max-width: 3rem;
+    max-height: 3rem;
+    width: var(--boardItemSize) !important;
+    height: var(--boardItemSize) !important;
+    min-width: var(--boardItemSize) !important;
+    min-height: var(--boardItemSize) !important;
     border-radius: $boardItemRadius;
-    margin: 2px;
+    margin: 1px;
 
     .dice {
-      display: grid;
+      display: flex;
       justify-content: center;
       align-items: center;
-      width: $diceItemSize !important;
-      height: $diceItemSize !important;
+      max-width: 3rem;
+      max-height: 3rem;
+      width: calc(var(--boardItemSize) - 8px) !important;
+      height: calc(var(--boardItemSize) - 8px) !important;
       border-radius: 100%;
       padding: 0;
-      gap: 0;
 
       .dice-circle {
-        margin: 2px;
+        margin-left: 2px;
+        margin-right: 2px;
         border-radius: 100%;
         display: inline-block;
         background: #fff;
-        width: 6px;
-        height: 6px;
+        width: calc(var(--boardItemSize) / 7);
+        height: calc(var(--boardItemSize) / 7);
       }
     }
   }

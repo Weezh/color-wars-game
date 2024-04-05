@@ -1,3 +1,20 @@
+import {useLayoutEffect, useState} from "react";
+
+export const useWindowSize = () => {
+  const [size, setSize] = useState([window.innerWidth, window.innerHeight]);
+
+  useLayoutEffect(() => {
+    function updateSize() {
+      setSize([window.innerWidth, window.innerHeight]);
+    }
+    window.addEventListener('resize', updateSize);
+    updateSize();
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+
+  return size;
+}
+
 export const arraysAreEqual = (arr1: number[], arr2: number[]): boolean => {
   // If arrays have different lengths, they cannot be equal
   if (arr1.length !== arr2.length) {
