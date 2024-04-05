@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://weezh.github.io/color-wars-game/",
   "scripts": {
     "dev": "vite",
     "host": "vite --host",
