@@ -1,5 +1,4 @@
-import {Route, createBrowserRouter, createRoutesFromElements, RouterProvider} from "react-router-dom";
-// import ForbiddenPage from "../commons/pages/ForbiddenPage.tsx";
+import {HashRouter as Router, Routes, Route} from "react-router-dom";
 import React from "react";
 
 const ConfigSelectorPage = React.lazy(() => import('../pages/ConfigSelectorPage.tsx'));
@@ -7,19 +6,14 @@ const ColorWarsPage = React.lazy(() => import('../pages/ColorWarsPage.tsx'));
 // const AboutAbout = React.lazy(() => import('../features/profile/pages/AboutPage.tsx'));
 
 const AppRouter = () => {
-    const routes = (createBrowserRouter(
-            createRoutesFromElements(
-                <Route>
-                    <Route path='colors-war' element={<React.Suspense fallback={<PreLoader/>}><ColorWarsPage/></React.Suspense>}/>
-
-                    <Route path='*' element={<React.Suspense fallback={<PreLoader/>}><ConfigSelectorPage/></React.Suspense>}/>
-                    {/*<Route path='403' element={<ForbiddenPage/>} />*/}
-                </Route>
-            )
-        )
+    return (
+        <Router>
+            <Routes>
+                <Route path='colors-war' element={<React.Suspense fallback={<PreLoader/>}><ColorWarsPage/></React.Suspense>}/>
+                <Route path='*' element={<React.Suspense fallback={<PreLoader/>}><ConfigSelectorPage/></React.Suspense>}/>
+            </Routes>
+        </Router>
     )
-
-    return <RouterProvider router={routes}/>;
 }
 
 const PreLoader = React.memo(() => {
