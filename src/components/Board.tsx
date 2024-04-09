@@ -9,11 +9,12 @@ type BoardProps = {
     size: BoardSize,
     currentPlayer: number,
     setCurrentPlayer: Dispatch<React.SetStateAction<number>>,
+    setWonPlayer: Dispatch<React.SetStateAction<number>>,
     setIsFinished: Dispatch<React.SetStateAction<boolean>>,
     maxPlayers: number
 }
 
-const Board = ({ size, currentPlayer, setCurrentPlayer, maxPlayers, setIsFinished }: BoardProps) => {
+const Board = ({ size, currentPlayer, setCurrentPlayer, setWonPlayer, maxPlayers, setIsFinished }: BoardProps) => {
     const [ cells, setCells] = useState<Array<CellState[]>>([]);
     const [ rows, setRows ] = useState<React.ReactNode[]>();
     const [ isInitialized, setIsInitialized ] = useState(false);
@@ -34,7 +35,7 @@ const Board = ({ size, currentPlayer, setCurrentPlayer, maxPlayers, setIsFinishe
 
             // Inner loop for columns
             for (let j = 0; j < size; j++) {
-                colValues.push({ player: null, state: 0, rowIndex: i, cellIndex: j });
+                colValues.push({ player: null, state: 0, rowIndex: i, cellIndex: j, isFinished: false });
             }
 
             initCells.push(colValues);
@@ -53,7 +54,15 @@ const Board = ({ size, currentPlayer, setCurrentPlayer, maxPlayers, setIsFinishe
                 const cellKey = `cell_${cell.rowIndex}_${cell.cellIndex}`;
                 // Push JSX element for column into cols array
                 // cols.push(<button data-state={0} onClick={(event) => onCellClick(event, i, j)} className="btn cell" key={cellKey}></button>);
-                cols.push(<BoardItem isWaiting={waiting} key={cellKey} currentState={cell} onClick={onCellClick} />)
+                cols.push(
+                    <BoardItem
+                        currentPlayer={currentPlayer}
+                        isWaiting={waiting}
+                        key={cellKey}
+                        currentState={cell}
+                        onClick={onCellClick}
+                    />
+                )
             });
 
             // Push JSX element for row into rows array
@@ -78,8 +87,13 @@ const Board = ({ size, currentPlayer, setCurrentPlayer, maxPlayers, setIsFinishe
     useEffect(() => {
         checkPlayerOut();
 
-        if (players.length == maxPlayers && players.filter(x => !x.isOut).length == 1) {
-            setIsFinished(true);
+        if (players.length == maxPlayers) {
+            const remainedPlayer = players.filter(x => !x.isOut);
+
+            if (remainedPlayer.length == 1) {
+                setWonPlayer(remainedPlayer[0].playerNumber);
+                setIsFinished(true);
+            }
         }
     }, [players]);
 
@@ -213,7 +227,8 @@ const Board = ({ size, currentPlayer, setCurrentPlayer, maxPlayers, setIsFinishe
             const newValue = {
                 ...item,
                 player: currentPlayer,
-                state: (item.state+1 > 4 ? 4 : item.state+1)
+                state: (item.state+1 > 4 ? 4 : item.state+1),
+                isFinished: item.state+1 >= 4
             }
 
             cells[rowIndex][cellIndex] = newValue;

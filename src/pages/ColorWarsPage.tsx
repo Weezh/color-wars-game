@@ -13,6 +13,8 @@ const ColorWarsPage = () => {
     const [ maxPlayerCount, setMaxPlayerCount ] = useState<number|undefined>();
     const [ boarderSize, setBoarderSize ] = useState<BoardSize|undefined>();
 
+    const [ wonPlayer, setWonPlayer ] = useState<number>(1);
+
     const navigate = useNavigate();
     const [width, height] = useWindowSize();
 
@@ -44,7 +46,10 @@ const ColorWarsPage = () => {
                     setMaxPlayerCount(2)
                 }
             }
-        } catch {}
+        } catch (e) {
+            console.log('MaxPlayer: ' + e)
+            setMaxPlayerCount(2)
+        }
 
         try {
             if (searchParams.has('s')) {
@@ -59,6 +64,7 @@ const ColorWarsPage = () => {
             }
         } catch (e) {
             console.log('Size: ' + e)
+            setBoarderSize(5)
         }
 
         const audio = new Audio('/src/assets/sounds/whistle.mp3');
@@ -70,6 +76,12 @@ const ColorWarsPage = () => {
     }, [currentPlayer]);
 
     const resetGame = () => {
+        if (confirm('are you sure?')) {
+            window.location.reload();
+        }
+    }
+
+    const backTo = () => {
         if (confirm('are you sure?')) {
             navigate('/');
         }
@@ -96,16 +108,22 @@ const ColorWarsPage = () => {
             {/*    </div> : undefined*/}
             {/*}*/}
 
-            <h3 className={`text-white mb-4 inline-block text-center ${!isFinished ? 'bg-neutral-700' : 'bg-success'} py-2 px-4 rounded-xl`}>
-                {
-                    !isFinished
-                        ? <span>Current Player: <span className=''>{currentPlayer}</span></span>
-                        : <span>Player won!</span>
-                }
-            </h3>
+            {/*<h3 className={`text-white mb-4 inline-block text-center ${!isFinished ? 'bg-neutral-700' : 'bg-success'} py-2 px-4 rounded-xl`}>*/}
+            {/*    {*/}
+            {/*        !isFinished*/}
+            {/*            ? <span>Current Player: <span className=''>{currentPlayer}</span></span>*/}
+            {/*            : <span>Player won!</span>*/}
+            {/*    }*/}
+            {/*</h3>*/}
+            {
+                isFinished &&
+                <h3 className={`text-white mb-4 inline-block text-center ${!isFinished ? 'bg-neutral-700' : 'bg-success'} py-2 px-4 rounded-xl`}>
+                    <span>Player { wonPlayer } won!</span>
+                </h3>
+            }
 
             <div className='flex w-screen absolute top-[20px] justify-center left-0 right-0'>
-                <button onClick={resetGame} className="btn-close btn btn-circle btn-outline border-white fill-white">
+                <button onClick={backTo} className="btn-close btn btn-circle btn-outline border-white fill-white">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
                          stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
@@ -148,6 +166,7 @@ const ColorWarsPage = () => {
 
             <Board
                 maxPlayers={maxPlayerCount!}
+                setWonPlayer={setWonPlayer}
                 setIsFinished={setIsFinished}
                 currentPlayer={currentPlayer}
                 setCurrentPlayer={setCurrentPlayer}

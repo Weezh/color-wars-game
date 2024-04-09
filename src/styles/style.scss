@@ -29,6 +29,26 @@ html {
   transition: background-color 100ms linear;
 }
 
+.current-player1 {
+  background: color-mix(in srgb, #fff, $playerOne 25%) !important;
+  transition: background-color 100ms linear;
+}
+
+.current-player2 {
+  background: color-mix(in srgb, #fff, $playerTwo 25%) !important;
+  transition: background-color 100ms linear;
+}
+
+.current-player3 {
+  background: color-mix(in srgb, #fff, $playerThree 25%) !important;
+  transition: background-color 100ms linear;
+}
+
+.current-player4 {
+  background: color-mix(in srgb, #fff, $playerFour 25%) !important;
+  transition: background-color 100ms linear;
+}
+
 .bg-player2 {
   background: $playerTwo;
   transition: background-color 100ms linear;
@@ -79,6 +99,28 @@ html {
     border-radius: $boardItemRadius;
     margin: 1px;
 
+    .dice-ghost {
+      position: absolute;
+      animation-duration: 200ms;
+      animation-iteration-count: 1;
+    }
+
+    .dice-ghost1 {
+      animation-name: dice-ghost-animation1;
+    }
+
+    .dice-ghost2 {
+      animation-name: dice-ghost-animation2;
+    }
+
+    .dice-ghost3 {
+      animation-name: dice-ghost-animation3;
+    }
+
+    .dice-ghost4 {
+      animation-name: dice-ghost-animation4;
+    }
+
     .dice {
       display: flex;
       justify-content: center;
@@ -100,5 +142,49 @@ html {
         height: calc(var(--boardItemSize) / 7);
       }
     }
+  }
+}
+
+@keyframes dice-ghost-animation1 {
+  0% {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes dice-ghost-animation2 {
+  0% {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes dice-ghost-animation3 {
+  0% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes dice-ghost-animation4 {
+  0% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
   }
 }
